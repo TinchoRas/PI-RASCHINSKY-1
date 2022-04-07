@@ -1,0 +1,39 @@
+body {
+  background: url('https://cdn.wallpapersafari.com/40/34/vyucRg.jpg') no-repeat center fixed;
+  background-size: cover;
+    margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.paginado {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ padding: 5px;
+ list-style-type: none;
+}
+
+.paginado .numero {
+  margin: 0 10px 0 10px;
+}
+
+.paginado .numero .background {
+  background: #fff;
+  border-radius: 50%;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
