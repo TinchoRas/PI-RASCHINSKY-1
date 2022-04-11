@@ -5,6 +5,9 @@ import { getDogs, getTemperaments, filter, filterByOrigin, orderByName, orderByW
 import CardDog from './CardDog';
 import Paginado from './Paginado';
 import SearchBar from './SearchBar';
+import styles from "./Home.module.css";
+
+
 export default function Home() {
     const  dispatch = useDispatch()
       const allDogs = useSelector ((state) => state.dogs)
@@ -68,11 +71,13 @@ export default function Home() {
       } 
 
       return (
-      <div>
+         <div >
+              <div>
              
               <h1>Welcome to Dogland!</h1>
               <Link to='/dog'> Create Dog </Link>
               <button onClick={e=> {handleClick(e)} }>Reload every puppy</button>
+              </div>
              <div>
                <select onChange={(e)=> handleSort(e)}>
                   <option value='asc'>Ascendente</option> 
@@ -105,19 +110,28 @@ export default function Home() {
                   allDogs={allDogs.length}
                   paginado={paginado}
                />
-               
+                 <div className={styles.cardContainer}>
                   {
                   currentDogs?.map(e=> {
                      return (
-                         <div key={e.id}>
+                         <div  key={e.id}>
                         <Link to={`/home/${e.id}`}>  
                         {/* abrir backticks para y meter home/${e.id} */}
-                     <CardDog name={e.name} image={e.image} weight_min={e.weight_min} weight_max={e.weight_max} temperament={e.temperament} />
+                     <CardDog name={e.name}
+                      image={e.image}
+                     //   weight_min={e.weight_min} 
+                     //    weight_max={e.weight_max}
+                         temperament={e.temperament} />
+                         
+
                      </Link>
                         </div>
                      )})
                   }
+                  </div>
              </div>
       </div>
       )
 }
+
+

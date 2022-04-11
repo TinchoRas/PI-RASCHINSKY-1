@@ -1,0 +1,27 @@
+/* .cardContainer{
+    
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  position: relative;
+  flex-direction: row;
+  max-width: 300px;
+  margin: 0 ;
+  border-image: black;
+  border-radius: 20px;
+  height: 200px;
+  width: 100px;
+  
+}   */
+
+.cardContainer {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  display: grid;
+  justify-items: center;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  cursor: pointer;
+}
