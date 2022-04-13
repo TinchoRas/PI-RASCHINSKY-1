@@ -94,49 +94,73 @@ router.get('/dogs/:id', async (req, res)=>{
 
 
   
-router.get('/temperament', async (req,res)=>{
-    const apiTemperament = await getAllInfo();
-    const newTemperaments = await apiTemperament.map((e)=> e.temperament).filter((e)=>e)
-    //console.log(newTemperaments)
-    newTemp = newTemperaments.join().split(',')
-    console.log(newTemp)
-    newTemp = [... new Set(newTemp)].sort()
-    
-    newTemp.forEach((e) => {
-        Temperament.findOrCreate({
-            where: {name: e}
-        })
-    })
-    
-    const totalTemperament = await Temperament.findAll()
-    res.status(200).send(totalTemperament)
+router.get('/temperament', async (req,res)=>{ try {
+    const allDogs = await getAllInfo();
+    const temperament = [
+      ...new Set(
+        allDogs
+          .map((e) => e.temperament)
 
+          /* todos los t. en un array cuyos  son str */
+          .join()
+          .split(",")
+
+        /* un array donde cada elemento es un unico temperamento en str */
+      ),
+    ]
+      .sort()
+      .filter((e) => e && e[0] === " ");
+    /* ordena alfabeticamente y elimina strings vacios(solo hay uno pero bueno) */
+
+    const clearTemp = temperament.map((e) => e.trim());
+
+    for (let i = 0; i < clearTemp.length; i++) {
+      const e = clearTemp[i];
+      await Temperament.findOrCreate({
+        where: { name: e },
+      });
+    }
+  
+    const AllTemperament = await Temperament.findAll();
+    res.send(AllTemperament);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.post('/dog', async (req, res) => {
-    let {
-        id,
+    const {
+      name,
+      heightMax,
+      heightMin,
+      weightMax,
+      weightMin,
+      temperament,
+      life_span,
+      image,
+    } = req.body;
+  
+    try {
+      let NewDog = await Dog.create({
         name,
-        weight_min,
-        weight_max,
-        height_min,
-        height_max,
+        heightMax,
+        heightMin,
+        weightMax,
+        weightMin,
         life_span,
         image,
-        temperament } = req.body
-    try { 
-    const createDog  =  await Dog.create({id, name, weight_min, weight_max, height_min, height_max, life_span, image})
-    const dbTemperament = await Temperament.findAll({
-        where: {name: temperament}
-    })
-   await createDog.addTemperament(dbTemperament)
-    res.send('Perro creado')
-
-    
-} catch (error) {
-    res.status(400).send(error)
-}
-})  
+      });
+  
+      let temperamentNewDog = await Temperament.findAll({
+        where: { name: temperament },
+      });
+  
+      NewDog.addTemperament(temperamentNewDog);
+      res.send("Tu nueva raza perruna ha sido agregada");
+    } catch (error) {
+      res.send(error);
+    }
+  });
 
 router.delete('/delete/:id', async (req, res) => {
     const {id} = req.params  

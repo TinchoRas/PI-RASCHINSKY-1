@@ -108,12 +108,40 @@ const getAllId = async (id) => {
             return dogsApi
         }  }
 
-const getTemperament = (temperament) => {
-     getAllInfo.filter(e => {
-    e.temperament === temperament
+// const getTemperament = (temperament) => {
+//      getAllInfo.filter(e => {
+//     e.temperament === temperament
     
-}) 
+// }) 
  
-}
+// }
+
+async function getTemperament(req, res, next) {
+
+    const count = await Temperament.count();
+    
+    if (!count) {
+  
+      let temps = [];
+  
+      let { data } = await axios.get('https://api.thedogapi.com/v1/breeds/');
+      data.forEach((dog) => {
+        if (dog.temperament) {
+          const tempsArr = dog.temperament?.split(", ");
+          tempsArr.forEach((currTemp) => {
+            const exist = temps.find((temp) => temp.name === currTemp);
+            if (!exist) {
+              temps.push({ name: currTemp });
+            }
+          });
+        }
+      });
+      await Temperament.bulkCreate(temps);
+      return res.json(temps);
+    }
+    const temps = await Temperament.findAll();
+    return res.json(temps);
+  }
+  
 
 module.exports = {getAllInfo, getApiInfoById, getTemperament, getAllId, getDbInfoById}

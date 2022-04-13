@@ -57,7 +57,7 @@ export default function DogCreate () {
             ...input,
             temperaments: [...input.temperaments, e.target.value],
           })} else {alert ("No puede seleccionar más de 5 temperamentos")}
-        setTemperamentosElegidos((temps) => [...temps, e.target.options[index].text]);
+        // setTemperamentosElegidos((temps) => [...temps, e.target.options[index].text]);
       
       };
 
@@ -71,7 +71,7 @@ export default function DogCreate () {
           heightMin: 0,
           weightMax: 0,
           weightMin: 0,
-          temperament: [],
+          temperaments: [],
           life_span: "",
           image: "",
         });
@@ -107,7 +107,7 @@ export default function DogCreate () {
                      </select>
                      <input
                      type='Text'
-                     value = {input.temperaments}
+                     value = {input.temperament}
                      name="temperaments"
                      onChange={handleInputChange} 
                      />

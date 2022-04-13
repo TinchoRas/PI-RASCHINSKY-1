@@ -30,16 +30,13 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
+    
+      
     life_span: {
       type: DataTypes.STRING,
       allowNull: false
 },  
-
-  //  createDb: {
-  //    type: DataTypes.BOOLEAN,
-  //    allowNull: false,
-  //    defaultValue: true,
-  //  }
+   
    
 
   });
