@@ -5,7 +5,7 @@ const { Router, application } = require('express');
 // Ejemplo: const authRouter = require('./auth.js');
 const {Temperament, Dog} = require('../db')
 const axios = require('axios')
-const {getAllInfo, getApiInfoById, getTemperament} = require('../Controllers/ControllersDog');
+const {getAllInfo, getApiInfoById, getTemperament, getDbInfoById, getAllId} = require('../Controllers/ControllersDog');
 const e = require('express');
 const router = Router();
 
@@ -17,10 +17,7 @@ const router = Router();
 
 
 
-router.get('/dogs', async (req, res)=>  {   //esta ruta se puede usar también para preguntar por query debido a que el query funciona de esa manera
-    
-    // se le agregaría una ? a dogs y quedaría ---> /dogs?name=...---> pregunta si tiene el ATRIBUTO y si ese atributo es igual a lo que le paso por QUERY
-    
+router.get('/dogs', async (req, res)=>  {   
         const {name} = req.query;
         const everyDog = await getAllInfo()
         try { 
@@ -67,7 +64,7 @@ router.get('/dogs', async (req, res)=>  {   //esta ruta se puede usar también p
 router.get('/dogs/:id', async (req, res)=>{
     const {id} = req.params
     try { 
-               const respuesta = await getApiInfoById(id)
+               const respuesta = await getAllId(id)
                 
                 if(respuesta) {
                     res.status(200).send(respuesta);
@@ -80,32 +77,26 @@ router.get('/dogs/:id', async (req, res)=>{
         
             }
 } )    
- 
-// router.get('/temperament', async (req, res)=>{
-    
+
+// router.get('/dogs/:id', (req, res)=>{ 
+//   const {id} = req.params
+//   try { 
+//       if(id) { 
+//       return getApiInfoById(id).then(info => {
+//             res.status(200).send(info)
+//       }) }
+//   } 
+//   catch (error) { 
+//       console.log(error)
+//    }  
+
+// }) 
 
 
-//     const temperamentosApi = await getAllInfo()
-//     const temperamentos = await temperamentosApi.map( e => e.temperament).filter((e) => e)
-//      const nuevosTemperamentos = await temperamentos.join().split(',')
-     
-//      nuevosTemperamentos = [... new Set(nuevosTemperamentos)].sort()
-    
-//      nuevosTemperamentos.forEach(e => {
-//          Temperament.findOrCreate({
-//              where : {name : e}
-//          })
-//          console.log(nuevosTemperamentos)
-         
-//      });
-//       const totalTemperament = await Temperament.findAll();
-//       res.status(200).send(totalTemperament)
-//       console.log(totalTemperament)
-//     }) ;
   
 router.get('/temperament', async (req,res)=>{
     const apiTemperament = await getAllInfo();
-    const newTemperaments = await apiTemperament.map((e)=> e.temperament)  // .filter((e)=>e)
+    const newTemperaments = await apiTemperament.map((e)=> e.temperament).filter((e)=>e)
     //console.log(newTemperaments)
     newTemp = newTemperaments.join().split(',')
     console.log(newTemp)
@@ -115,7 +106,7 @@ router.get('/temperament', async (req,res)=>{
         Temperament.findOrCreate({
             where: {name: e}
         })
-    });
+    })
     
     const totalTemperament = await Temperament.findAll()
     res.status(200).send(totalTemperament)
@@ -146,6 +137,24 @@ router.post('/dog', async (req, res) => {
     res.status(400).send(error)
 }
 })  
+
+router.delete('/delete/:id', async (req, res) => {
+    const {id} = req.params  
+    
+    try {
+        if(id) {
+            await Dog.destroy({
+                where: {id: id}
+            })
+            res.send({msg : 'Perro eliminado'})
+        } 
+       
+          
+      } catch (error) {
+          console.log(error)
+      }
+ },
+)
 
 
 

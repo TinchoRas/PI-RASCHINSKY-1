@@ -1,10 +1,11 @@
-import { GET_DOGS, GET_TEMPERAMENTS, FILTER_TEMPERAMENTS, FILTER_BY_ORIGIN, ORDER_BY_NAME, ORDER_BY_WEIGHT, SEARCH_DOGS, GET_DETAIL, CREATE_DOG } from '../actions/acciones'
+import { GET_DOGS, GET_TEMPERAMENTS, FILTER_TEMPERAMENTS, FILTER_BY_ORIGIN, ORDER_BY_NAME, ORDER_BY_WEIGHT, SEARCH_DOGS, GET_DETAIL, CREATE_DOG, DELETE_DOG } from '../actions/acciones'
 
 const initialState = {
     dogs: [],
     temperaments: [],
     everyDog: [],
-    detail: []
+    detail: [],
+    createdDogs: [],
 }
 
 function rootReducer(state = initialState, action) {
@@ -102,7 +103,14 @@ function rootReducer(state = initialState, action) {
                 case CREATE_DOG: 
                 return {
                     ...state,
-                }        
+                    createdDogs: action.payload
+                }   
+                
+                case DELETE_DOG: 
+                return {
+                    ...state,
+                    
+                 }
         default:
             return state
     }

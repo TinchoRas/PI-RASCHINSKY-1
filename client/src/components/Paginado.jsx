@@ -3,7 +3,7 @@ import React from 'react';
 export default function Paginado ({dogsPerPage, allDogs, paginado}){
     const pagingNums = []
 
-    for (let i = 0; i <= Math.ceil(allDogs/dogsPerPage); i++) {
+    for (let i = 0; i <= Math.ceil(allDogs/dogsPerPage)-1; i++) {
         pagingNums.push(i+1);
         
     }

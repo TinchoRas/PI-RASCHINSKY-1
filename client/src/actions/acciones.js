@@ -56,8 +56,7 @@ export function filter(payload) {
     }
   }
 
-  
-  // export function searchDogs (payload) {
+    // export function searchDogs (payload) {
   //   return (dispatch) => {
   //     axios.get('http://localhost:3001/dogs?name=' + payload)
   //     .then((dogs) => {
@@ -87,10 +86,10 @@ export function filter(payload) {
   } 
 
   export const GET_DETAIL = 'GET_DETAIL'
-  export function getDetail (payload) {
+  export function getDetail (id) {
     return async function (dispatch){
       try {
-        let jojo = await axios.get(`http://localhost:3001/dogs/${payload}`)
+        let jojo = await axios.get(`http://localhost:3001/dogs/${id}`)
         return dispatch({
           type: 'GET_DETAIL',
           payload: jojo.data
@@ -109,3 +108,20 @@ export function filter(payload) {
       return response
     }
   } 
+
+
+  export const DELETE_DOG = "DELETE_DOG"
+  export function deleteDog (id) {
+    return async function (dispatch) {
+      try {
+        const perroEliminado = await axios.delete(`http://localhost:3001/delete/${id}`)
+      return dispatch({
+        type: DELETE_DOG,
+        payload: perroEliminado
+      }) 
+   } 
+      catch(err) {
+        console.log(err)
+      }
+    }
+  }

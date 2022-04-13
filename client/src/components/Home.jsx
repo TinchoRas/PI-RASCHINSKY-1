@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from 'react-redux'
 import { getDogs, getTemperaments, filter, filterByOrigin, orderByName, orderByWeight } from '../actions/acciones';
 import CardDog from './CardDog';
 import Paginado from './Paginado';
-import SearchBar from './SearchBar';
 import styles from "./Home.module.css";
 
 
@@ -26,12 +25,12 @@ export default function Home() {
       }
  
       useEffect(() => {
-          dispatch(getDogs());   //esto es como hacer un map.dispatchToProps, funciona igual. Pero con el hooks es más fácil.
-      }, [dispatch]) //------> y le pasamos acá un array vacío porque no depende de nada determinado para que el componente se monte! Si dependiera de algo, le pasaríamos algún valor al array.   
+          dispatch(getDogs());   
+      }, [dispatch])    
       
       useEffect(() => {
         dispatch(getTemperaments());
-      }, [dispatch]);
+      }, [dispatch]); 
 
     
       
@@ -72,44 +71,38 @@ export default function Home() {
 
       return (
          <div >
-              <div>
+          <div>
              
               <h1>Welcome to Dogland!</h1>
               <Link to='/dog'> Create Dog </Link>
-              <button onClick={e=> {handleClick(e)} }>Reload every puppy</button>
-              </div>
-             <div>
+              <button onClick={e=> {handleClick(e)} }>Recargar todos los perros</button>
+          </div>
+           
+            <div>
                <select onChange={(e)=> handleSort(e)}>
                   <option value='asc'>Ascendente</option> 
                   <option value='desc'>Descendente</option>
                </select>
+           
                <select onChange={(e)=> handleWeight(e)}>
                   <option value='Peso asc'>Peso Ascendente</option> 
                   <option value='Peso desc'>Peso Descendente</option>
                </select>
 
                <select  onChange={(e)=> handleFilter(e)}>
-                   <option value='temperament'>Temperament</option>
+                  <option value='temperament'>Temperament</option>
                   {
                   allTemps?.map((t) => 
                   (<option value={t.name} key={t.id}> {t.name} </option>
                   ))}                                     
-                </select>
+               </select>
                 
-                <select onChange={(e)=> handlefilterByOrigin(e)}>
-                   <option value= 'All Dogs!!'>All Dogs!!</option>
-                <option value='fromApi'>From Api</option>
-                 <option value='createdInDB'>Created in DB</option>
-                 </select>
-                 
-
-                
-                
-               <Paginado
-                  dogsPerPage={dogsPerPage}
-                  allDogs={allDogs.length}
-                  paginado={paginado}
-               />
+               <select onChange={(e)=> handlefilterByOrigin(e)}>
+                  <option value= 'All Dogs!!'>All Dogs!!</option>
+                  <option value='fromApi'>From Api</option>
+                  <option value='createdInDB'>Created in DB</option>
+               </select> 
+              
                  <div className={styles.cardContainer}>
                   {
                   currentDogs?.map(e=> {
@@ -128,7 +121,14 @@ export default function Home() {
                         </div>
                      )})
                   }
+
+
                   </div>
+                  <Paginado
+                  dogsPerPage={dogsPerPage}
+                  allDogs={allDogs.length}
+                  paginado={paginado}
+               />
              </div>
       </div>
       )

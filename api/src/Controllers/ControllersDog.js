@@ -10,7 +10,7 @@ const getApiInfo = async () => {
        const weightSplited = element.weight.metric.split("-")
        const heightSplited = element.height.metric.split("-")
         return {
-            id: element.id,
+            id: `${element.id}`,
             name: element.name, 
             life_span: element.life_span,
             temperament: element.temperament,
@@ -38,12 +38,37 @@ const getDbInfo = async () => {
     })
 }
 
+
+
 const getAllInfo = async () => {
     const infoAp = await getApiInfo();
     const infoDb =  await getDbInfo();
     const todaLaInfo = infoAp.concat(infoDb);
     return todaLaInfo;
 } 
+
+const getDbInfoById = async (id) => {
+  try {
+      const dbDogs = await Dog.findByPk(id, { include: Temperament }) 
+      return {
+          id : dbDogs.id,
+            name : dbDogs.name,
+            weight_min : dbDogs.weight_min,
+            weight_max : dbDogs.weight_max,
+            height_min : dbDogs.height_min,
+            height_max : dbDogs.height_max,
+            life_span : dbDogs.life_span,
+            image : dbDogs.image,
+            temperament : dbDogs.temperaments.map(e => e.name)
+
+            
+      }
+  } catch (error) {
+      console.log(error)
+  }    
+}
+
+
 
 const getApiInfoById = async (id) => {
 try {
@@ -73,6 +98,16 @@ try {
 }
 }
 
+const getAllId = async (id) => {
+    const uuid = id.includes('-') 
+    if (uuid) {
+        const dogsDb = await getDbInfoById(id)
+        return dogsDb  } 
+        else { 
+            const dogsApi = await getApiInfoById(id);
+            return dogsApi
+        }  }
+
 const getTemperament = (temperament) => {
      getAllInfo.filter(e => {
     e.temperament === temperament
@@ -81,4 +116,4 @@ const getTemperament = (temperament) => {
  
 }
 
-module.exports = {getAllInfo, getApiInfoById, getTemperament}
+module.exports = {getAllInfo, getApiInfoById, getTemperament, getAllId, getDbInfoById}
